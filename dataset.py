@@ -81,7 +81,9 @@ def stream_fineweb(
             "Falling back to tiny `wikitext-2-raw-v1` for smoke-testing.",
             dataset_name, subset, split, e,
         )
-        ds = load_dataset("wikitext", "wikitext-2-raw-v1", split=split, streaming=True)
+        # Map "validation" to "test" for wikitext, or use the requested split
+        fallback_split = "test" if split == "validation" else split
+        ds = load_dataset("wikitext", "wikitext-2-raw-v1", split=fallback_split, streaming=True)
     return ds
 
 
