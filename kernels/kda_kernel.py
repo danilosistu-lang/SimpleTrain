@@ -277,8 +277,8 @@ def _kda_chunked_scan_torch(
         # ---- intra-chunk contribution ----
         # o_intra[b,h,i,:] = sum_{p<=i} <q[b,h,i,:], k[b,h,p,:]> * v[b,h,p,:]
         w = m[:L, :L].view(1, 1, L, L)                       # [1,1,L,L]
-        attn = torch.einsum("bhild,bhjld->bhij", qc, kc) * w  # [B,H,L,L]
-        o_intra = torch.einsum("bhij,bhjd->bhid", attn, vc)   # [B,H,L,D]
+        attn = torch.einsum("bhid,bhjd->bhij", qc, kc) * w   # [B,H,L,L]
+        o_intra = torch.einsum("bhij,bhjd->bhid", attn, vc)  # [B,H,L,D]
 
         # ---- inter-chunk contribution from carried state ----
         # o_inter[b,h,i,:] = q[b,h,i,:] @ state[b,h,:,:]
