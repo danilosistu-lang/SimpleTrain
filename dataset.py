@@ -13,7 +13,6 @@ Features
 """
 from __future__ import annotations
 
-import os
 import queue
 import threading
 from dataclasses import dataclass
@@ -47,9 +46,12 @@ class Tokenizer:
             self.vocab_size = self._enc.vocab_size
 
     def encode(self, text: str) -> List[int]:
-        if hasattr(self._enc, "encode"):
+        # tiktoken returns list directly; HF tokenizer returns dict with "input_ids" key
+        try:
             ids = self._enc.encode(text)
-        else:                                            # HF tokenizer
+            if isinstance(ids, dict):  # HF tokenizer
+                ids = ids["input_ids"]
+        except (AttributeError, TypeError):
             ids = self._enc.encode(text)["input_ids"]
         return list(ids)
 
@@ -74,7 +76,9 @@ def stream_fineweb(
     from datasets import load_dataset
     log.info("Streaming %s (%s/%s) ...", dataset_name, subset, split)
     try:
-        ds = load_dataset(dataset_name, name=subset, split=split, streaming=True)
+        # FineWeb only has 'train' split; map 'validation' to 'train'
+        fineweb_split = "train" if split == "validation" else split
+        ds = load_dataset(dataset_name, name=subset, split=fineweb_split, streaming=True)
     except Exception as e:
         log.warning(
             "Could not stream %s[%s/%s] (%s). "
