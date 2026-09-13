@@ -3,7 +3,7 @@ Pretrain a Kimi K3 hybrid transformer (KDA + Gated MLA) on FineWeb
 with custom Triton kernels and a ≥30% MFU target across Ampere / Ada /
 Hopper / Blackwell.
 ```bash
-$ git clone <repo_url> && cd SimpleTrain
+$ git clone https://github.com/danilosistu-lang/SimpleTrain && cd SimpleTrain
 $ pip install -r requirements.txt
 $ python train.py --variant 1b --batch_size 16 --num_steps 10000 \
                   --wandb_project simpletrain-dev
