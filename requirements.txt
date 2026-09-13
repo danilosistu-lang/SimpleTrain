@@ -1,0 +1,15 @@
+# --- Core deep-learning stack ---
+torch>=2.1.0
+triton>=2.1.0
+
+# --- Data pipeline ---
+datasets>=2.14.0
+tiktoken>=0.5.0
+transformers>=4.36.0      # used only for the GPT-2 BPE tokenizer fallback
+numpy>=1.24.0
+
+# --- Experiment tracking ---
+wandb>=0.16.0
+
+# --- Optional: speedups ---
+flash-attn>=2.5.0; platform_system == "Linux" and python_version >= "3.9"
