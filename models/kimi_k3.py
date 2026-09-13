@@ -212,6 +212,7 @@ class SiTUGLUFFN(nn.Module):
 
     def __init__(self, cfg: KimiK3Config):
         super().__init__()
+        self.cfg = cfg
         hidden = int(cfg.ffn_multiple * cfg.d_model)
         # round hidden to a multiple of 64 for tensor-core friendliness
         hidden = ((hidden + 63) // 64) * 64
